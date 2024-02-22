@@ -1,0 +1,26 @@
+<body>
+  <div id="container">
+    <h1>Guestbook</h1>
+    <div id="content">
+      {{#each messages}}
+        <div class="message">
+          <div>
+            {{message}}
+          </div>
+          <div>
+            {{time}}
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+  <form id="form">
+    <input
+      type="text"
+      id="input"
+      placeholder="Skriv Något"
+      autocomplete="off"
+    />
+    <input type="submit" value="Lägg till" />
+  </form>
+</body>
