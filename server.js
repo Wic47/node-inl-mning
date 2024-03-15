@@ -16,20 +16,32 @@ app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", "./views");
 
-let messages = await db.getMessages();
+// let messages = await db.getMessages();
 
 app.get("/", async (req, res) => {
-  res.render("guestbook", { messages });
+  res.render("login");
+  // res.render("guestbook", { messages });
 });
 
-io.on("connection", (socket) => {
-  socket.on("getNewData", async (res) => {
-    let userMessage = res;
-    await db.addMessage(userMessage);
-    messages = await db.getMessages2();
-    io.emit("receiveNewData", messages);
-  });
+app.get("/main", async (req, res) => {
+  res.render("mainsite");
 });
+
+app.post("/", async (req, res) => {
+  if (req.body && req.body.username && req.body.password) {
+    db.createUser(req.body.username, req.body.password);
+  }
+  res.redirect("/mainsite");
+});
+
+// io.on("connection", (socket) => {
+//   socket.on("getNewData", async (res) => {
+//     let userMessage = res;
+//     await db.addMessage(userMessage);
+//     messages = await db.getMessages2();
+//     io.emit("receiveNewData", messages);
+//   });
+// });
 
 server.listen(port, () => {
   console.log(`Servern körs nu på port ${port}.`);

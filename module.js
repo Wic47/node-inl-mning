@@ -1,11 +1,12 @@
 import sql from "mysql2/promise";
+import bcrypt from "bcrypt";
 
 async function getConnection() {
   return sql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "node/sql",
+    database: "forum",
   });
 }
 
@@ -39,4 +40,30 @@ async function getMessages2() {
   return messages;
 }
 
-export { addMessage, getMessages, getMessages2 };
+async function createUser(username, password) {
+  let conn = await getConnection();
+  bcrypt.hash(password, 10, async (err, hash) => {
+    try {
+      conn
+        .query(
+          `insert into users (username, password) values ("${username}","${hash}");`
+        )
+        .then(() => {
+          conn.end();
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  });
+}
+
+async function getLoginInfo(username) {
+  let conn = await getConnection();
+  let query = await conn.query(
+    `select password from users where username = ${username}`
+  );
+  conn.end();
+  return query;
+}
+
+export { addMessage, getMessages, getMessages2, createUser, getLoginInfo };
