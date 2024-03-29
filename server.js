@@ -18,20 +18,26 @@ app.set("views", "./views");
 
 // let messages = await db.getMessages();
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
   res.render("login");
   // res.render("guestbook", { messages });
 });
 
-app.get("/main", async (req, res) => {
+app.get("/main", (req, res) => {
   res.render("mainsite");
 });
 
 app.post("/", async (req, res) => {
   if (req.body && req.body.username && req.body.password) {
-    db.createUser(req.body.username, req.body.password);
+    db.createUser(req.body.username, req.body.password).then(res.json());
   }
-  res.redirect("/mainsite");
+});
+
+app.post("/login", async (req, res) => {
+  if (req.body.user) {
+    const hashedPassword = db.getLoginInfo(req.body.user);
+    res.json({ password: hashedPassword });
+  }
 });
 
 // io.on("connection", (socket) => {

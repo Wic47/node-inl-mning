@@ -60,7 +60,7 @@ async function createUser(username, password) {
 async function getLoginInfo(username) {
   let conn = await getConnection();
   let query = await conn.query(
-    `select password from users where username = ${username}`
+    `select password from users where username = "${username}"`
   );
   conn.end();
   return query;

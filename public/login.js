@@ -5,13 +5,24 @@ const registerForm = document.getElementById("register");
 const registerUsername = document.getElementById("registerUsername");
 const registerPassword = document.getElementById("registerPassword");
 
-loginForm.addEventListener("submit", (e) => {
+loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  let hashedPassword = db.getLoginInfo(loginUsername.value);
-  bcrypt.compare(loginPassword, hashedPassword, (err, result) => {
-    if (result) {
-    }
+  fetch(`http://localhost:3000/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ user: loginUsername.value }),
+  }).then((res) => {
+    console.log(res);
   });
+  // // bcrypt.compare(loginPassword, hashedPassword, (err, result) => {
+  // //   if (result) {
+  // //     window.location = "./main";
+  // //   } else {
+  // //     console.log(err);
+  // //   }
+  // });
 });
 
 registerForm.addEventListener("submit", (e) => {
@@ -26,5 +37,10 @@ registerForm.addEventListener("submit", (e) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(info),
-  }).then((res) => res.json());
+  }).then((res) => {
+    res.json();
+    if (res.status === 200) {
+      window.location = "./main";
+    }
+  });
 });
