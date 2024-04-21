@@ -4,6 +4,8 @@ import bodyParser from "body-parser";
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
 import http from "http";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 const app = express();
 const port = 3000;
@@ -28,16 +30,45 @@ app.get("/main", (req, res) => {
 });
 
 app.post("/", async (req, res) => {
+  if (req.body && req.body.usernameR && req.body.passwordR) {
+    db.createUser(req.body.usernameR, req.body.passwordR).then(res.json());
+  }
   if (req.body && req.body.username && req.body.password) {
-    db.createUser(req.body.username, req.body.password).then(res.json());
+    let logininfo = await db.getLoginInfo(req.body.username);
+    bcrypt.compare(req.body.password, logininfo.password, (err, result) => {
+      if (result) {
+        let token = jwt.sign(
+          {
+            sub: `${logininfo.id}`,
+            name: `${req.body.username}`,
+          },
+          "hilmerärkort",
+          { expiresIn: "1h" }
+        );
+        res.send(token);
+      } else {
+        console.log(err);
+      }
+    });
   }
 });
 
-app.post("/login", async (req, res) => {
-  if (req.body.user) {
-    const hashedPassword = db.getLoginInfo(req.body.user);
-    res.json({ password: hashedPassword });
+app.get("/auth", (req, res) => {
+  let auth = req.headers["authorization"];
+
+  if (auth === undefined) {
+    res.status.send(401).send("Auth token missing");
   }
+
+  let token = auth.slice(7);
+  let decoded;
+  try {
+    jwt.verify(token, "hilmerärkort");
+  } catch (error) {
+    console.log(error);
+    res.status(401).send("Invalid auth token");
+  }
+  res.send(decoded);
 });
 
 // io.on("connection", (socket) => {

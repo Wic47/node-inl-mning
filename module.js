@@ -60,10 +60,10 @@ async function createUser(username, password) {
 async function getLoginInfo(username) {
   let conn = await getConnection();
   let query = await conn.query(
-    `select password from users where username = "${username}"`
+    `select password,id from users where username = "${username}"`
   );
   conn.end();
-  return query;
+  return { password: query[0][0].password, id: query[0][0].id };
 }
 
 export { addMessage, getMessages, getMessages2, createUser, getLoginInfo };

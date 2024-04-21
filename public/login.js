@@ -7,36 +7,35 @@ const registerPassword = document.getElementById("registerPassword");
 
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  fetch(`http://localhost:3000/login`, {
+  let loginInfo = {
+    username: loginUsername.value,
+    password: loginPassword.value,
+  };
+  fetch(`http://localhost:3000`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ user: loginUsername.value }),
+    body: JSON.stringify(loginInfo),
   }).then((res) => {
-    console.log(res);
+    console.log(JSON.stringify(res));
+    // sessionStorage.setItem("token", res)
+    // window.location("localhost:3000/main");
   });
-  // // bcrypt.compare(loginPassword, hashedPassword, (err, result) => {
-  // //   if (result) {
-  // //     window.location = "./main";
-  // //   } else {
-  // //     console.log(err);
-  // //   }
-  // });
 });
 
 registerForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  let info = {
-    username: registerUsername.value,
-    password: registerPassword.value,
+  let registerInfo = {
+    usernameR: registerUsername.value,
+    passwordR: registerPassword.value,
   };
   fetch("http://localhost:3000", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(info),
+    body: JSON.stringify(registerInfo),
   }).then((res) => {
     res.json();
     if (res.status === 200) {
