@@ -45,7 +45,8 @@ app.post("/", async (req, res) => {
           "hilmerärkort",
           { expiresIn: "1h" }
         );
-        res.send(token);
+        console.log(token);
+        res.json(token);
       } else {
         console.log(err);
       }

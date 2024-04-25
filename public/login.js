@@ -17,11 +17,12 @@ loginForm.addEventListener("submit", async (e) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(loginInfo),
-  }).then((res) => {
-    console.log(JSON.stringify(res));
-    // sessionStorage.setItem("token", res)
-    // window.location("localhost:3000/main");
-  });
+  })
+    .then((res) => res.json())
+    .then((token) => {
+      sessionStorage.setItem("token", token);
+      window.location = "./main";
+    });
 });
 
 registerForm.addEventListener("submit", (e) => {
