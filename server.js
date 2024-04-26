@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
   // res.render("guestbook", { messages });
 });
 
-app.get("/main", async (req, res) => {
+app.get("/main", (req, res) => {
   res.render("mainsite");
 });
 
@@ -35,21 +35,25 @@ app.post("/", async (req, res) => {
   }
   if (req.body && req.body.username && req.body.password) {
     let logininfo = await db.getPassword(req.body.username);
-    bcrypt.compare(req.body.password, logininfo.password, (err, result) => {
-      if (result) {
-        let token = jwt.sign(
-          {
-            sub: `${logininfo.id}`,
-            name: `${req.body.username}`,
-          },
-          "hilmerärkort",
-          { expiresIn: "1h" }
-        );
-        res.json(token);
-      } else {
-        console.log(err);
-      }
-    });
+    if (logininfo != undefined) {
+      bcrypt.compare(req.body.password, logininfo.password, (err, result) => {
+        if (result) {
+          let token = jwt.sign(
+            {
+              sub: `${logininfo.id}`,
+              name: `${req.body.username}`,
+            },
+            "hilmerärkort",
+            { expiresIn: "1h" }
+          );
+          res.json(token);
+        } else {
+          console.log(err);
+        }
+      });
+    } else {
+      res.json(401);
+    }
   }
 });
 
@@ -57,7 +61,7 @@ app.get("/auth", (req, res) => {
   let auth = req.headers["authorization"];
 
   if (auth === undefined) {
-    res.status.send(401).send("Auth token missing");
+    res.json(401);
   }
   let token = auth.slice(7);
   let decoded;
@@ -65,9 +69,9 @@ app.get("/auth", (req, res) => {
     decoded = jwt.verify(token, "hilmerärkort");
   } catch (error) {
     console.log(error);
-    res.status(401).send("Invalid auth token");
+    res.json(401);
   }
-  res.send(decoded);
+  res.json(decoded);
 });
 
 // io.on("connection", (socket) => {

@@ -58,11 +58,16 @@ async function createUser(username, password) {
 
 async function getPassword(username) {
   let conn = await getConnection();
-  let query = await conn.query(
-    `select password,id from users where username = "${username}"`
-  );
+  let query = await conn
+    .query(`select password,id from users where username = "${username}"`)
+    .catch((e) => {
+      console.error(e);
+    });
+  if (query[0][0] != undefined) {
+    conn.end();
+    return { password: query[0][0].password, id: query[0][0].id };
+  }
   conn.end();
-  return { password: query[0][0].password, id: query[0][0].id };
 }
 
 export { addMessage, getMessages, getMessages2, createUser, getPassword };

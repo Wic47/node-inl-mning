@@ -20,8 +20,12 @@ loginForm.addEventListener("submit", async (e) => {
   })
     .then((res) => res.json())
     .then((token) => {
-      sessionStorage.setItem("token", token);
-      window.location = "./main";
+      if (token != 401) {
+        sessionStorage.setItem("token", token);
+        window.location = "./main";
+      } else {
+        alert("Invalid username or password"); // fixa snyggare
+      }
     });
 });
 
