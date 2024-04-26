@@ -43,21 +43,20 @@ async function getMessages2() {
 async function createUser(username, password) {
   let conn = await getConnection();
   bcrypt.hash(password, 10, async (err, hash) => {
-    try {
-      conn
-        .query(
-          `insert into users (username, password) values ("${username}","${hash}");`
-        )
-        .then(() => {
-          conn.end();
-        });
-    } catch (err) {
-      console.log(err);
-    }
+    conn
+      .query(
+        `insert into users (username, password) values ("${username}","${hash}");`
+      )
+      .then(() => {
+        conn.end();
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   });
 }
 
-async function getLoginInfo(username) {
+async function getPassword(username) {
   let conn = await getConnection();
   let query = await conn.query(
     `select password,id from users where username = "${username}"`
@@ -66,4 +65,4 @@ async function getLoginInfo(username) {
   return { password: query[0][0].password, id: query[0][0].id };
 }
 
-export { addMessage, getMessages, getMessages2, createUser, getLoginInfo };
+export { addMessage, getMessages, getMessages2, createUser, getPassword };
