@@ -1,0 +1,45 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/post.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="post-container">
+        <div class="user">
+          {{post.username}}
+          •
+          {{post.date}}
+        </div>
+        <h1>{{post.title}}</h1>
+        {{post.bodyText}}
+      </div>
+      <form id="form">
+        <textarea
+          class="commentField"
+          id="comment"
+          placeholder="Skriv en kommentar"
+          required
+          rows="1"
+          name="comment"
+        ></textarea>
+        <input type="submit" id="submit" />
+      </form>
+      <div id="comment-container">
+        {{#comments}}
+          <div class="comment">
+            <div>
+              {{user}}
+              •
+              {{date}}
+            </div>
+            {{bodyText}}
+          </div>
+        {{/comments}}
+      </div>
+    </div>
+    <script src="/post.js"></script>
+  </body>
+</html>

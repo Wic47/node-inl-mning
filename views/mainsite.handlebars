@@ -8,11 +8,80 @@
   <body>
     <div class="container">
       <div class="account">
-        <h1>Username</h1>
+        <h1>{{name}}</h1>
         <div class="button-container">
-          <div class="button"></div>
-          <div class="button"></div>
+          <div class="button" id="new">Skapa nytt inlägg</div>
+          <div class="button" id="posts">Mina inlägg</div>
         </div>
+      </div>
+      <div class="posts" id="post-container">
+        {{#posts}}
+          <a href="/main/{{postid}}">
+            <div class="post">
+              <div>
+                <div>
+                  {{username}}
+                  •
+                  {{date}}
+                </div>
+              </div>
+              <div>
+                {{title}}
+              </div>
+              <div>
+                {{bodyText}}
+              </div>
+            </div>
+          </a>
+        {{/posts}}
+      </div>
+    </div>
+    <div id="blur"></div>
+    <div class="popup">
+      <h1>Skapa nytt inlägg</h1>
+      <form id="form">
+        <input
+          type="text"
+          class="form-element"
+          id="title"
+          placeholder="Titel"
+          name="title"
+        />
+        <textarea
+          class="form-element body-text"
+          id="body-text"
+          required
+          title=""
+          placeholder="..."
+          name="body-text"
+        ></textarea>
+        <input type="submit" class="form-element" value="Skicka" />
+      </form>
+    </div>
+    <div class="popup">
+      <h1>Mina Inlägg</h1>
+      <div class="myPosts">
+        {{#oldPosts}}
+          <div class="post">
+            <h1>{{title}}</h1>
+            <div>{{bodyText}}</div>
+            <div>{{date}}</div>
+            <form class="postForm">
+              <button class="oldPosts" type="submit" value="{{postid}}">Ta bort</button>
+            </form>
+          </div>
+        {{/oldPosts}}
+        <h2>Kommentarer</h2>
+        {{#comments}}
+          <div class="post">
+            <h1>{{title}}</h1>
+            <div>{{bodyText}}</div>
+            <div>{{date}}</div>
+            <form class="commentForm">
+              <button class="comments" type="submit" value="{{id}}">Ta bort</button>
+            </form>
+          </div>
+        {{/comments}}
       </div>
     </div>
     <script src="main.js" type="module"></script>

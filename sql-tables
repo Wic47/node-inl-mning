@@ -1,0 +1,31 @@
+CREATE TABLE
+  `comments` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `userid` int(11) NOT NULL,
+    `bodyText` varchar(3000) NOT NULL,
+    `parent` int(11) NOT NULL,
+    `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+    PRIMARY KEY (`id`),
+    KEY `comments_relation_1` (`parent`),
+    CONSTRAINT `comments_relation_1` FOREIGN KEY (`parent`) REFERENCES `posts` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  ) ENGINE = InnoDB AUTO_INCREMENT = 36 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_bin
+
+  CREATE TABLE
+  `users` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `username` varchar(40) NOT NULL,
+    `password` varchar(255) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `username` (`username`),
+    UNIQUE KEY `username_2` (`username`)
+  ) ENGINE = InnoDB AUTO_INCREMENT = 124 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_bin
+
+  CREATE TABLE
+  `posts` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `userid` int(11) NOT NULL,
+    `title` varchar(80) NOT NULL,
+    `bodyText` varchar(3000) NOT NULL,
+    `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+    PRIMARY KEY (`id`)
+  ) ENGINE = InnoDB AUTO_INCREMENT = 46 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_bin

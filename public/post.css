@@ -1,0 +1,100 @@
+body {
+  display: flex;
+  margin: 0;
+  justify-content: center;
+  background-color: #272727;
+  color: white;
+  font-family: arial;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  width: 45vw;
+}
+
+.post-container {
+  display: flex;
+  width: inherit;
+  height: fit-content;
+  flex-direction: column;
+  margin-top: 5vh;
+  padding-bottom: 1%;
+  border-bottom: 1px solid black;
+}
+
+h1 {
+  margin: 0;
+}
+
+.user {
+  font-size: 0.85rem;
+}
+
+.commentField {
+  display: flex;
+  align-items: center;
+  color: white;
+  background-color: #202020;
+  width: 80%;
+  outline: 0;
+  border: 0;
+  border-radius: 2.5vw 0 0 2.5vw;
+  margin-top: 1vh;
+  padding: 1vh 1vw;
+  font-family: arial;
+  resize: none;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+form {
+  display: flex;
+  width: inherit;
+  align-items: center;
+  justify-content: center;
+}
+
+input[type="submit"] {
+  background-color: #202020;
+  outline: 0;
+  border: 0;
+  color: white;
+  height: 41.25px;
+  margin-top: 1vh;
+  border-radius: 0 2.5vw 2.5vw 0;
+  border-left: 1px solid #151515;
+}
+
+input[type="submit"]:hover {
+  background-color: #101010;
+  cursor: pointer;
+}
+
+.comment {
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+  border-bottom: 1px solid black;
+  transition: 0.25s;
+  padding: 1vh 0;
+}
+
+.comment > div {
+  font-size: 0.75rem;
+}
+
+::-webkit-scrollbar {
+  background-color: #404040;
+  border-radius: 50px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #303030;
+  border-radius: 50px;
+}

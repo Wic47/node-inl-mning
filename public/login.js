@@ -22,9 +22,9 @@ loginForm.addEventListener("submit", async (e) => {
     .then((token) => {
       if (token != 401) {
         sessionStorage.setItem("token", token);
-        window.location = "./main";
+        window.location = `./main?session=${token}`;
       } else {
-        alert("Invalid username or password"); // fixa snyggare
+        alert("Fel lösenord eller användarnamn");
       }
     });
 });
@@ -41,10 +41,15 @@ registerForm.addEventListener("submit", (e) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(registerInfo),
-  }).then((res) => {
-    res.json();
-    if (res.status === 200) {
-      window.location = "./main";
-    }
-  });
+  })
+    .then((res) => res.json())
+    .then((token) => {
+      console.log(token);
+      if (token != 401) {
+        sessionStorage.setItem("token", token);
+        window.location = `./main?session=${token}`;
+      } else {
+        alert("Användarnamnet existerar redan");
+      }
+    });
 });
